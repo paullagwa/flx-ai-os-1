@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="FLX AI OS">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="FLX AI Operating System - Transform your business with AI-first decision intelligence">
+    
+    <title>FLX AI Operating System</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
+    <style>
+        :root {
+            --gradient-primary: linear-gradient(135deg, #9333ea, #ec4899, #f97316, #eab308);
+            --safe-area-inset-top: env(safe-area-inset-top);
+            --safe-area-inset-bottom: env(safe-area-inset-bottom);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: #fff;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-top: var(--safe-area-inset-top);
+            padding-bottom: calc(var(--safe-area-inset-bottom) + 80px);
+        }
+
+        .gradient-text {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Mobile-optimized header */
+        header {
+            padding: 2rem 1.5rem;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(147, 51, 234, 0.15) 0%, rgba(0, 0, 0, 0) 100%);
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #999;
+            margin-bottom: 1rem;
+        }
+
+        .install-prompt {
+            background: var(--gradient-primary);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 1.5rem;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .install-prompt.show {
+            display: flex;
+        }
+
+        .install-prompt button {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Bottom navigation for mobile */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 0;
+            padding-bottom: calc(var(--safe-area-inset-bottom) + 0.5rem);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.5rem 1rem;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.7rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            min-width: 60px;
+        }
+
+        .nav-item.active {
+            color: #fff;
+        }
+
+        .nav-icon {
+            font-size: 1.5rem;
+            transition: transform 0.2s;
+        }
+
+        .nav-item.active .nav-icon {
+            transform: scale(1.1);
+        }
+
+        main {
+            padding: 1rem 1.5rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-content {
+            font-size: 1rem;
+            color: #ccc;
+            line-height: 1.7;
+        }
+
+        /* Mobile-optimized cards */
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.25rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+
+        .card:active {
+            transform: scale(0.98);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Touch-optimized form controls */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #ccc;
+            font-size: 0.95rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+            -webkit-appearance: none;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #9333ea;
+            box-shadow: 0 0 0 4px rgba(147, 51, 234, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Touch-optimized buttons - minimum 44px height for iOS */
+        button {
+            width: 100%;
+            min-height: 52px;
+            padding: 1rem 1.5rem;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:active {
+            transform: scale(0.97);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        button:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .button-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .output-box {
+            background: rgba(147, 51, 234, 0.05);
+            border: 1px solid rgba(147, 51, 234, 0.2);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-top: 1rem;
+            white-space: pre-wrap;
+            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            max-height: 400px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab {
+            flex-shrink: 0;
+            padding: 0.75rem 1.25rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #999;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            background: var(--gradient-primary);
+            color: #fff;
+            border-color: transparent;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Metric cards optimized for mobile */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+        }
+
+        .metric-card {
+            background: rgba(147, 51, 234, 0.1);
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-label {
+            color: #999;
+            font-size: 0.75rem;
+        }
+
+        .score-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 0.75rem;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            transition: width 0.5s ease;
+        }
+
+        .highlight-box {
+            background: rgba(147, 51, 234, 0.05);
+            border-left: 3px solid;
+            border-image: var(--gradient-primary) 1;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        .success-message {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* Pricing cards for mobile */
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-card.featured {
+            background: var(--gradient-primary);
+            position: relative;
+        }
+
+        .pricing-card.featured .card-content {
+            background: #000;
+            border-radius: 14px;
+            padding: 1.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--gradient-primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0.75rem 0;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .check {
+            color: #22c55e;
+            font-weight: 800;
+        }
+
+        .cross {
+            color: #ef4444;
+            font-weight: 800;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #9333ea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .spinner.show {
+            display: block;
+        }
+
+        /* Saved items list */
+        .saved-list {
+            margin: 1rem 0;
+        }
+
+        .saved-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .saved-item-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .saved-item-date {
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        .delete-btn {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            padding: 0.5rem 1rem;
+            min-height: auto;
+            width: auto;
+            font-size: 0.85rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #666;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        /* Hide sections by default on mobile */
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @media (min-width: 768px) {
+            .bottom-nav {
+                display: none;
+            }
+            
+            main {
+                padding-bottom: 2rem;
+            }
+            
+            body {
+                padding-bottom: 0;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #000;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Install Prompt -->
+    <div class="install-prompt" id="installPrompt">
+        <div>
+            <strong>Install FLX AI OS</strong>
+            <div style="font-size: 0.85rem; opacity: 0.9;">Get instant access from your home screen</div>
+        </div>
+        <button onclick="installApp()">Install</button>
+    </div>
+
+    <header>
+        <h1 class="gradient-text">FLX AI OS</h1>
+        <p class="subtitle">AI-First Decision Intelligence</p>
+    </header>
+
+    <main>
+        <!-- HOME PAGE -->
+        <div id="home" class="page-section active">
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-icon">🚀</span>
+                    <h2 class="gradient-text">Welcome</h2>
+                </div>
+                <div class="section-content">
+                    <p style="margin-bottom: 1rem;">
+                        FLX uses AI as infrastructure to compress time, remove bottlenecks, and build systems that compound.
+                    </p>
+                    <div class="card">
+                        <h3>What You Can Do</h3>
+                        <div style="color: #999; font-size: 0.95rem; line-height: 1.8;">
+                            <div style="margin: 0.5rem 0;">✨ Generate FLX-standard AI prompts</div>
+                            <div style="margin: 0.5rem 0;">📊 Calculate decision leverage scores</div>
+                            <div style="margin: 0.5rem 0;">💾 Save prompts and decisions</div>
+                            <div style="margin: 0.5rem 0;">🎯 Access premium frameworks</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-icon">⚡</span>
+                    <h2 class="gradient-text">Core Philosophy</h2>
+                </div>
+                <div class="highlight-box">
+                    <strong>AI is infrastructure, not a tool.</strong><br><br>
+                    If AI does not increase leverage, it does not belong in the system. Every implementation must demonstrate measurable impact.
+                </div>
+            </div>
+        </div>
+
+        <!-- PROMPT BUILDER PAGE -->
+        <div id="prompts" class="page-section">
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-icon">✨</span>
+                    <h2 class="gradient-text">Prompt Builder</h2>
+                </div>
+                
+                <div class="tabs">
+                    <button class="tab active" onclick="switchPromptTab('strategy')">Strategy</button>
+                    <button class="tab" onclick="switchPromptTab('content')">Content</button>
+                    <button class="tab" onclick="switchPromptTab('systems')">Systems</button>
+                </div>
+
+                <!-- Strategy Tab -->
+                <div id="strategy-prompt" class="tab-content active">
+                    <div class="form-group">
+                        <label>Your Strategic Challenge</label>
+                        <textarea id="strategy-challenge" placeholder="E.g., Should we expand into enterprise market or double down on SMB?"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Annual Revenue</label>
+                        <select id="strategy-revenue">
+                            <option value="0-100k">$0 - $100K</option>
+                            <option value="100k-500k">$100K - $500K</option>
+                            <option value="500k-1m">$500K - $1M</option>
+                            <option value="1m-5m">$1M - $5M</option>
+                            <option value="5m+">$5M+</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Constraints</label>
+                        <input type="text" id="strategy-constraints" placeholder="Budget, time, resources...">
+                    </div>
+
+                    <button onclick="generateStrategyPrompt()">Generate Prompt</button>
+                    
+                    <div id="strategy-output" class="output-box" style="display: none;"></div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1rem;" id="strategy-actions" style="display: none;">
+                        <button class="button-secondary" onclick="copyPrompt('strategy-output')">
+                            📋 Copy
+                        </button>
+                        <button class="button-secondary" onclick="savePrompt('strategy')">
+                            💾 Save
+                        </button>
+                    </div>
+                    
+                    <div class="success-message" id="strategy-success">Copied to clipboard!</div>
+                </div>
+
+                <!-- Content Tab -->
+                <div id="content-prompt" class="tab-content">
+                    <div class="form-group">
+                        <label>Topic or Message</label>
+                        <textarea id="content-topic" placeholder="Why most founders waste time on vanity metrics..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Target Audience</label>
+                        <select id="content-audience">
+                            <option value="founders">Founders / CEOs</option>
+                            <option value="operators">Operators / COOs</option>
+                            <option value="marketers">Marketers</option>
+                            <option value="investors">Investors</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Desired Outcome</label>
+                        <input type="text" id="content-outcome" placeholder="Reframe how they think about metrics">
+                    </div>
+
+                    <button onclick="generateContentPrompt()">Generate Prompt</button>
+                    
+                    <div id="content-output" class="output-box" style="display: none;"></div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1rem;" id="content-actions" style="display: none;">
+                        <button class="button-secondary" onclick="copyPrompt('content-output')">
+                            📋 Copy
+                        </button>
+                        <button class="button-secondary" onclick="savePrompt('content')">
+                            💾 Save
+                        </button>
+                    </div>
+                    
+                    <div class="success-message" id="content-success">Copied to clipboard!</div>
+                </div>
+
+                <!-- Systems Tab -->
+                <div id="systems-prompt" class="tab-content">
+                    <div class="form-group">
+                        <label>Repetitive Process</label>
+                        <textarea id="systems-process" placeholder="Manually qualifying leads from 3 sources, takes 2 hours daily"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Frequency</label>
+                        <select id="systems-frequency">
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Time Spent (hours)</label>
+                        <input type="number" id="systems-time" placeholder="2" min="0.5" step="0.5">
+                    </div>
+
+                    <button onclick="generateSystemsPrompt()">Generate Prompt</button>
+                    
+                    <div id="systems-output" class="output-box" style="display: none;"></div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1rem;" id="systems-actions" style="display: none;">
+                        <button class="button-secondary" onclick="copyPrompt('systems-output')">
+                            📋 Copy
+                        </button>
+                        <button class="button-secondary" onclick="savePrompt('systems')">
+                            💾 Save
+                        </button>
+                    </div>
+                    
+                    <div class="success-message" id="systems-success">Copied to clipboard!</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DECISION CALCULATOR PAGE -->
+        <div id="calculator" class="page-section">
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-icon">📊</span>
+                    <h2 class="gradient-text">Decision Calculator</h2>
+                </div>
+                
+                <div class="form-group">
+                    <label>Decision Description</label>
+                    <textarea id="decision-description" placeholder="Hire sales team of 3 vs. build AI lead qualification system"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Upfront Investment ($)</label>
+                    <input type="number" id="decision-investment" placeholder="50000" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label>Monthly Operating Cost ($)</label>
+                    <input type="number" id="decision-operating" placeholder="15000" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label>Expected Monthly Return ($)</label>
+                    <input type="number" id="decision-return" placeholder="30000" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label>Scalability</label>
+                    <select id="decision-scalability">
+                        <option value="high">High - Scales exponentially</option>
+                        <option value="medium">Medium - Some economies of scale</option>
+                        <option value="low">Low - Scales linearly</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Compounding Asset?</label>
+                    <select id="decision-compounding">
+                        <option value="yes">Yes - Gets better over time</option>
+                        <option value="no">No - Requires constant input</option>
+                    </select>
+                </div>
+
+                <button onclick="calculateDecision()">Calculate Leverage</button>
+                
+                <div class="spinner" id="calculator-spinner"></div>
+
+                <div id="decision-results" style="display: none;">
+                    <div class="metrics-grid" style="margin-top: 1.5rem;">
+                        <div class="metric-card">
+                            <div class="metric-value gradient-text" id="leverage-score">--</div>
+                            <div class="metric-label">Leverage Score</div>
+                            <div class="score-bar">
+                                <div class="score-fill" id="leverage-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-value gradient-text" id="roi-18month">--</div>
+                            <div class="metric-label">18-Month ROI</div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-value gradient-text" id="compounding-factor">--</div>
+                            <div class="metric-label">Compound Factor</div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-value gradient-text" id="time-freedom">--</div>
+                            <div class="metric-label">Time Freedom</div>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box" id="decision-analysis"></div>
+                    
+                    <button class="button-secondary" style="margin-top: 1rem;" onclick="saveDecision()">
+                        💾 Save Decision Analysis
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SAVED PAGE -->
+        <div id="saved" class="page-section">
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-icon">💾</span>
+                    <h2 class="gradient-text">Saved Items</h2>
+                </div>
+                
+                <div class="tabs">
+                    <button class="tab active" onclick="switchSavedTab('prompts')">Prompts</button>
+                    <button class="tab" onclick="switchSavedTab('decisions')">Decisions</button>
+                </div>
+
+                <div id="saved-prompts-list" class="tab-content active">
+                    <div class="saved-list" id="prompts-list"></div>
+                </div>
+
+                <div id="saved-decisions-list" class="tab-content">
+                    <div class="saved-list" id="decisions-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRICING PAGE -->
+        <div id="pricing" class="page-section">
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-icon">💎</span>
+                    <h2 class="gradient-text">Premium Access</h2>
+                </div>
+
+                <div class="pricing-card">
+                    <h3>Free Access</h3>
+                    <div class="price gradient-text">$0</div>
+                    <p style="color: #999; margin-bottom: 1rem;">What you have now</p>
+                    <ul class="feature-list">
+                        <li><span class="check">✓</span> Prompt Builder (3 types)</li>
+                        <li><span class="check">✓</span> Decision Calculator</li>
+                        <li><span class="check">✓</span> Save & manage prompts</li>
+                        <li><span class="cross">✗</span> Master prompt library</li>
+                        <li><span class="cross">✗</span> AI agent templates</li>
+                    </ul>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="card-content">
+                        <div class="badge">MOST POPULAR</div>
+                        <h3>Premium Access</h3>
+                        <div class="price gradient-text">$9.99<span style="font-size: 1rem; font-weight: 400; color: #999;"> AUD/month</span></div>
+                        <p style="color: #666; font-size: 0.85rem; margin-top: 0.25rem;">~$6.30 USD/month</p>
+                        <p style="color: #999; margin-bottom: 1rem; margin-top: 0.5rem;">Cancel anytime • First 7 days free</p>
+                        <ul class="feature-list">
+                            <li><span class="check">✓</span> Everything in Free</li>
+                            <li><span class="check">✓</span> 50+ Master Prompts</li>
+                            <li><span class="check">✓</span> AI Agent Templates</li>
+                            <li><span class="check">✓</span> System Workflows</li>
+                            <li><span class="check">✓</span> Notion OS Template</li>
+                            <li><span class="check">✓</span> Monthly Updates</li>
+                            <li><span class="check">✓</span> Priority Support</li>
+                        </ul>
+                        <button onclick="handleCheckout('premium')" style="margin-top: 1rem;">
+                            Start 7-Day Free Trial
+                        </button>
+                    </div>
+                </div>
+
+                <div class="pricing-card">
+                    <h3>Enterprise</h3>
+                    <div class="price gradient-text">Custom</div>
+                    <p style="color: #999; margin-bottom: 1rem;">White-glove implementation</p>
+                    <ul class="feature-list">
+                        <li><span class="check">✓</span> Everything in Premium</li>
+                        <li><span class="check">✓</span> Custom Agent Dev</li>
+                        <li><span class="check">✓</span> 4x Strategy Sessions</li>
+                        <li><span class="check">✓</span> Team Training</li>
+                        <li><span class="check">✓</span> Direct Support</li>
+                    </ul>
+                    <button onclick="handleCheckout('enterprise')" style="margin-top: 1rem;" class="button-secondary">
+                        Contact Sales
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#home" class="nav-item active" onclick="switchPage('home', event)">
+            <div class="nav-icon">🏠</div>
+            <div>Home</div>
+        </a>
+        <a href="#prompts" class="nav-item" onclick="switchPage('prompts', event)">
+            <div class="nav-icon">✨</div>
+            <div>Prompts</div>
+        </a>
+        <a href="#calculator" class="nav-item" onclick="switchPage('calculator', event)">
+            <div class="nav-icon">📊</div>
+            <div>Calculate</div>
+        </a>
+        <a href="#saved" class="nav-item" onclick="switchPage('saved', event)">
+            <div class="nav-icon">💾</div>
+            <div>Saved</div>
+        </a>
+        <a href="#pricing" class="nav-item" onclick="switchPage('pricing', event)">
+            <div class="nav-icon">💎</div>
+            <div>Premium</div>
+        </a>
+    </nav>
+
+    <script>
+        // PWA Installation
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installPrompt').classList.add('show');
+        });
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('App installed');
+                    }
+                    deferredPrompt = null;
+                    document.getElementById('installPrompt').classList.remove('show');
+                });
+            }
+        }
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(err => {
+                console.log('SW registration failed:', err);
+            });
+        }
+
+        // Page Navigation
+        function switchPage(pageId, event) {
+            if (event) event.preventDefault();
+            
+            // Hide all pages
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update nav
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event?.target.closest('.nav-item')?.classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Load saved items if on saved page
+            if (pageId === 'saved') {
+                loadSavedItems();
+            }
+        }
+
+        // Prompt Tab Switching
+        function switchPromptTab(tab) {
+            document.querySelectorAll('#prompts .tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('#prompts .tab-content').forEach(c => c.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`${tab}-prompt`).classList.add('active');
+        }
+
+        // Saved Tab Switching
+        function switchSavedTab(tab) {
+            document.querySelectorAll('#saved .tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('#saved .tab-content').forEach(c => c.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            if (tab === 'prompts') {
+                document.getElementById('saved-prompts-list').classList.add('active');
+            } else {
+                document.getElementById('saved-decisions-list').classList.add('active');
+            }
+        }
+
+        // Generate Strategy Prompt
+        function generateStrategyPrompt() {
+            const challenge = document.getElementById('strategy-challenge').value;
+            const revenue = document.getElementById('strategy-revenue').value;
+            const constraints = document.getElementById('strategy-constraints').value;
+
+            if (!challenge) {
+                alert('Please describe your strategic challenge');
+                return;
+            }
+
+            const prompt = `ROLE:
+You are a senior strategy consultant with 15+ years experience advising high-growth companies. You specialize in identifying highest-leverage decisions and eliminating strategic distractions.
+
+OBJECTIVE:
+Analyze the following business decision and provide a framework for evaluation that maximizes leverage while accounting for real-world constraints.
+
+CONTEXT:
+Business Challenge: ${challenge}
+Current Annual Revenue: ${revenue}
+Constraints: ${constraints || 'None specified'}
+
+CONSTRAINTS:
+- Focus only on decisions that create 10x outcomes, not 10% improvements
+- Evaluate second-order effects 12-24 months ahead
+- Consider opportunity cost of NOT making this decision
+- Identify what makes this defensible vs. easily replicable
+
+QUALITY BAR:
+Your analysis must:
+1. Identify the 1-3 highest leverage variables that will determine success
+2. Map potential failure modes and how to avoid them
+3. Provide clear decision criteria (what must be true for this to work?)
+4. Include specific metrics to track in months 1, 3, 6, 12
+
+OUTPUT FORMAT:
+Provide your analysis in the following structure:
+1. Leverage Assessment (what makes this high/low leverage?)
+2. Second-Order Effects (what happens 12-24 months downstream?)
+3. Decision Framework (what criteria determine go/no-go?)
+4. Implementation Roadmap (if yes, what's the 90-day plan?)
+5. Red Flags (what would make you walk away?)
+
+SELF-CRITIQUE:
+Before delivering your response, ask yourself:
+- Does this advice create 10x outcomes or just incremental improvement?
+- Have I identified the highest leverage variables?
+- Is this actionable within their constraints?
+- Would a CEO pay $10K for this analysis?`;
+
+            document.getElementById('strategy-output').textContent = prompt;
+            document.getElementById('strategy-output').style.display = 'block';
+            document.getElementById('strategy-actions').style.display = 'grid';
+        }
+
+        // Generate Content Prompt
+        function generateContentPrompt() {
+            const topic = document.getElementById('content-topic').value;
+            const audience = document.getElementById('content-audience').value;
+            const outcome = document.getElementById('content-outcome').value;
+
+            if (!topic) {
+                alert('Please describe your content topic');
+                return;
+            }
+
+            const audienceMap = {
+                'founders': 'Founders and CEOs of 7-8 figure companies',
+                'operators': 'COOs and operators managing complex systems',
+                'marketers': 'Marketing leaders focused on ROI and attribution',
+                'investors': 'Angel investors and fund managers evaluating opportunities'
+            };
+
+            const prompt = `ROLE:
+You are an authority-driven content strategist who creates thought leadership that reframes thinking and controls narrative.
+
+OBJECTIVE:
+Create a comprehensive content piece that positions the author as THE authority on this topic while driving a specific outcome.
+
+CONTEXT:
+Topic/Message: ${topic}
+Target Audience: ${audienceMap[audience]}
+Desired Outcome: ${outcome || 'Position as authority and reframe thinking'}
+
+CONSTRAINTS:
+- Content must challenge conventional wisdom, not reinforce it
+- Focus on principles and frameworks, not tactics and hacks
+- Every claim must be defensible and evidence-based
+- Tone should be confident but not arrogant
+
+QUALITY BAR:
+This content must:
+1. Open with a counter-intuitive insight that makes the reader pause
+2. Present a clear framework or mental model they can apply
+3. Include 2-3 concrete examples that prove the point
+4. Close with a call to shift behavior, not just learn something
+
+OUTPUT FORMAT:
+1. Hook: Counter-intuitive opening that challenges assumptions
+2. Thesis: Clear statement of the main argument
+3. Framework: Step-by-step model or system to apply
+4. Evidence: Examples, data, or case studies that validate
+5. Implications: What changes when you think this way?
+6. Close: Strong call to action or perspective shift
+
+SELF-CRITIQUE:
+- Does this feel like original thinking or recycled content?
+- Would someone pay to read this?
+- Does it establish authority or just share information?
+- Is the framework clear enough to apply immediately?`;
+
+            document.getElementById('content-output').textContent = prompt;
+            document.getElementById('content-output').style.display = 'block';
+            document.getElementById('content-actions').style.display = 'grid';
+        }
+
+        // Generate Systems Prompt
+        function generateSystemsPrompt() {
+            const process = document.getElementById('systems-process').value;
+            const frequency = document.getElementById('systems-frequency').value;
+            const time = document.getElementById('systems-time').value;
+
+            if (!process || !time) {
+                alert('Please describe the process and time spent');
+                return;
+            }
+
+            const frequencyMap = {
+                'daily': { multiplier: 260, label: 'per year' },
+                'weekly': { multiplier: 52, label: 'per year' },
+                'monthly': { multiplier: 12, label: 'per year' }
+            };
+
+            const annualHours = time * frequencyMap[frequency].multiplier;
+            const annualCost = annualHours * 50;
+
+            const prompt = `ROLE:
+You are a systems architect and automation specialist focused on eliminating repetitive work and building processes that compound over time.
+
+OBJECTIVE:
+Design an AI-first automation system that eliminates manual work, improves consistency, and creates a compounding asset.
+
+CONTEXT:
+Process Description: ${process}
+Current Frequency: ${frequency} (${frequencyMap[frequency].multiplier}x ${frequencyMap[frequency].label})
+Time Investment: ${time} hours per occurrence
+Annual Cost: ${annualHours} hours = $${annualCost.toLocaleString()} (at $50/hour)
+
+CONSTRAINTS:
+- Solution must reduce manual time by 80%+ in 90 days
+- System must improve quality and consistency
+- Implementation cost should not exceed 6 months of savings
+- Must include human oversight for quality control
+
+QUALITY BAR:
+Your system design must include:
+1. Clear input/output specifications
+2. Decision logic and automation rules
+3. Quality control checkpoints
+4. Performance metrics (time saved, error rate, cost reduction)
+5. Maintenance requirements
+
+OUTPUT FORMAT:
+1. Process Breakdown: Map current workflow step-by-step
+2. Automation Opportunities: Which steps can be eliminated/automated?
+3. Technology Stack: What tools/platforms will you use?
+4. Implementation Plan: 30/60/90 day milestones
+5. Success Metrics: How do we measure if this works?
+6. Maintenance Plan: What ongoing work is required?
+
+ROI PROJECTION:
+- Current Annual Cost: $${annualCost.toLocaleString()}
+- Projected Savings: [Your calculation]
+- Implementation Cost: [Your estimate]
+- Break-Even Timeline: [Your projection]
+
+SELF-CRITIQUE:
+- Does this truly eliminate the work or just shift it?
+- Will this system compound (get better over time)?
+- Is the ROI compelling enough to implement immediately?`;
+
+            document.getElementById('systems-output').textContent = prompt;
+            document.getElementById('systems-output').style.display = 'block';
+            document.getElementById('systems-actions').style.display = 'grid';
+        }
+
+        // Calculate Decision
+        function calculateDecision() {
+            const description = document.getElementById('decision-description').value;
+            const investment = parseFloat(document.getElementById('decision-investment').value) || 0;
+            const operating = parseFloat(document.getElementById('decision-operating').value) || 0;
+            const returnAmount = parseFloat(document.getElementById('decision-return').value) || 0;
+            const scalability = document.getElementById('decision-scalability').value;
+            const compounding = document.getElementById('decision-compounding').value;
+
+            if (!description || investment === 0) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            // Show spinner
+            document.getElementById('calculator-spinner').classList.add('show');
+            document.getElementById('decision-results').style.display = 'none';
+
+            setTimeout(() => {
+                // Calculate leverage score
+                let leverageScore = 0;
+                
+                const scalabilityScores = { 'high': 40, 'medium': 25, 'low': 10 };
+                leverageScore += scalabilityScores[scalability];
+
+                leverageScore += (compounding === 'yes') ? 30 : 5;
+
+                const monthlyProfit = returnAmount - operating;
+                const roi = ((monthlyProfit * 12) - investment) / investment;
+                if (roi > 3) leverageScore += 30;
+                else if (roi > 1) leverageScore += 20;
+                else if (roi > 0.5) leverageScore += 10;
+                else leverageScore += 5;
+
+                const roi18 = (((monthlyProfit * 18) - investment) / investment * 100).toFixed(0);
+
+                let compoundingFactor = compounding === 'yes' ? 2.5 : 1.0;
+                if (scalability === 'high') compoundingFactor *= 1.5;
+
+                const timeFreedom = scalability === 'high' ? '20+' : 
+                                   scalability === 'medium' ? '10-15' : '5-8';
+
+                // Display results
+                document.getElementById('leverage-score').textContent = leverageScore;
+                document.getElementById('leverage-bar').style.width = leverageScore + '%';
+                document.getElementById('roi-18month').textContent = roi18 + '%';
+                document.getElementById('compounding-factor').textContent = compoundingFactor.toFixed(1) + 'x';
+                document.getElementById('time-freedom').textContent = timeFreedom + 'h';
+
+                let analysis = '';
+                if (leverageScore >= 80) {
+                    analysis = '🚀 <strong>HIGH LEVERAGE DECISION</strong><br><br>This decision demonstrates strong leverage characteristics. It scales efficiently, compounds over time, and shows solid ROI potential.';
+                } else if (leverageScore >= 60) {
+                    analysis = '✅ <strong>MODERATE LEVERAGE</strong><br><br>This decision has leverage potential but may require optimization. Consider how to increase scalability or reduce operating costs.';
+                } else {
+                    analysis = '⚠️ <strong>LOW LEVERAGE</strong><br><br>This decision shows limited leverage. It may scale linearly or require ongoing resource input. Consider alternatives that create more compounding value.';
+                }
+
+                document.getElementById('decision-analysis').innerHTML = analysis;
+
+                // Hide spinner, show results
+                document.getElementById('calculator-spinner').classList.remove('show');
+                document.getElementById('decision-results').style.display = 'block';
+
+                // Haptic feedback if available
+                if (navigator.vibrate) {
+                    navigator.vibrate(50);
+                }
+            }, 800);
+        }
+
+        // Copy to Clipboard
+        function copyPrompt(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const successId = elementId.replace('-output', '-success');
+                const successElement = document.getElementById(successId);
+                successElement.classList.add('show');
+                
+                if (navigator.vibrate) {
+                    navigator.vibrate(50);
+                }
+                
+                setTimeout(() => {
+                    successElement.classList.remove('show');
+                }, 3000);
+            });
+        }
+
+        // Local Storage Functions
+        function savePrompt(type) {
+            const prompts = JSON.parse(localStorage.getItem('flx-prompts') || '[]');
+            const promptData = {
+                id: Date.now(),
+                type: type,
+                content: document.getElementById(`${type}-output`).textContent,
+                date: new Date().toISOString()
+            };
+            
+            prompts.push(promptData);
+            localStorage.setItem('flx-prompts', JSON.stringify(prompts));
+            
+            alert('Prompt saved!');
+            if (navigator.vibrate) navigator.vibrate(50);
+        }
+
+        function saveDecision() {
+            const decisions = JSON.parse(localStorage.getItem('flx-decisions') || '[]');
+            const decisionData = {
+                id: Date.now(),
+                description: document.getElementById('decision-description').value,
+                score: document.getElementById('leverage-score').textContent,
+                roi: document.getElementById('roi-18month').textContent,
+                date: new Date().toISOString()
+            };
+            
+            decisions.push(decisionData);
+            localStorage.setItem('flx-decisions', JSON.stringify(decisions));
+            
+            alert('Decision saved!');
+            if (navigator.vibrate) navigator.vibrate(50);
+        }
+
+        function loadSavedItems() {
+            // Load prompts
+            const prompts = JSON.parse(localStorage.getItem('flx-prompts') || '[]');
+            const promptsList = document.getElementById('prompts-list');
+            
+            if (prompts.length === 0) {
+                promptsList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📝</div><div>No saved prompts yet</div></div>';
+            } else {
+                promptsList.innerHTML = prompts.map(p => `
+                    <div class="saved-item">
+                        <div>
+                            <div class="saved-item-title">${p.type.charAt(0).toUpperCase() + p.type.slice(1)} Prompt</div>
+                            <div class="saved-item-date">${new Date(p.date).toLocaleDateString()}</div>
+                        </div>
+                        <button class="delete-btn" onclick="deletePrompt(${p.id})">Delete</button>
+                    </div>
+                `).join('');
+            }
+            
+            // Load decisions
+            const decisions = JSON.parse(localStorage.getItem('flx-decisions') || '[]');
+            const decisionsList = document.getElementById('decisions-list');
+            
+            if (decisions.length === 0) {
+                decisionsList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📊</div><div>No saved decisions yet</div></div>';
+            } else {
+                decisionsList.innerHTML = decisions.map(d => `
+                    <div class="saved-item">
+                        <div>
+                            <div class="saved-item-title">Score: ${d.score} | ROI: ${d.roi}</div>
+                            <div class="saved-item-date">${new Date(d.date).toLocaleDateString()}</div>
+                        </div>
+                        <button class="delete-btn" onclick="deleteDecision(${d.id})">Delete</button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function deletePrompt(id) {
+            let prompts = JSON.parse(localStorage.getItem('flx-prompts') || '[]');
+            prompts = prompts.filter(p => p.id !== id);
+            localStorage.setItem('flx-prompts', JSON.stringify(prompts));
+            loadSavedItems();
+        }
+
+        function deleteDecision(id) {
+            let decisions = JSON.parse(localStorage.getItem('flx-decisions') || '[]');
+            decisions = decisions.filter(d => d.id !== id);
+            localStorage.setItem('flx-decisions', JSON.stringify(decisions));
+            loadSavedItems();
+        }
+
+        // Checkout Handler
+        function handleCheckout(tier) {
+            if (tier === 'premium') {
+                alert('Premium checkout would redirect to Stripe subscription page.\n\n$9.99 AUD/month (~$6.30 USD)\n7-day free trial • Cancel anytime');
+            } else if (tier === 'enterprise') {
+                alert('Enterprise inquiry would open Calendly or contact form.\n\nSchedule a strategy call to discuss custom implementation.');
+            }
+        }
+
+        // Initial load
+        window.addEventListener('load', () => {
+            loadSavedItems();
+        });
+    </script>
+</body>
+</html>
